@@ -17,7 +17,7 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Starting React Project
 
-Clone repo
-cd frontend-sales
-npm i
-npm run dev
+# Clone repo
+# cd frontend-sales
+# npm i
+# npm run dev
