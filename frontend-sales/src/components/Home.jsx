@@ -1,26 +1,66 @@
-import { Breadcrumbs, Typography } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
-import { Link, Outlet } from "react-router";
+import { useState } from "react";
+import {
+  Box,
+  Typography,
+  Tabs,
+  Tab,
+  Container,
+  AppBar,
+  Toolbar,
+} from "@mui/material";
+import StorefrontIcon from "@mui/icons-material/Storefront";
+import TableRowsIcon from "@mui/icons-material/TableRows";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import ViewOrders from "./ViewOrders";
+import DeleteOrder from "./DeleteOrder";
 
 const Home = () => {
+  const [tab, setTab] = useState(0);
+
   return (
-    <div>
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link
-          underline="hover"
-          sx={{ display: "flex", alignItems: "center", textDecoration: "none" }}
-          color="inherit"
-          href="/"
-        >
-          <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-          Home
-        </Link>
-      </Breadcrumbs>
-      <Typography variant="h4" sx={{ textAlign: "center" }}>
-        Welcome to the Superstore Sales Dashboard
-      </Typography>
-      <Outlet />
-    </div>
+    <Box sx={{ minHeight: "100vh", backgroundColor: "#f0f4f8" }}>
+      <AppBar position="static" elevation={1}>
+        <Toolbar>
+          <StorefrontIcon sx={{ mr: 1.5 }} />
+          <Typography variant="h6" fontWeight={700} sx={{ flexGrow: 1 }}>
+            StoreIQ — Superstore Sales Manager
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      <Box
+        sx={{
+          backgroundColor: "white",
+          borderBottom: 1,
+          borderColor: "divider",
+        }}
+      >
+        <Container maxWidth="lg">
+          <Tabs
+            value={tab}
+            onChange={(_, v) => setTab(v)}
+            textColor="primary"
+            indicatorColor="primary"
+          >
+            <Tab
+              icon={<TableRowsIcon fontSize="small" />}
+              iconPosition="start"
+              label="View Orders"
+            />
+            <Tab
+              icon={<DeleteOutlineIcon fontSize="small" />}
+              iconPosition="start"
+              label="Delete Orders"
+            />
+          </Tabs>
+        </Container>
+      </Box>
+
+      <Container maxWidth="lg" sx={{ py: 3 }}>
+        {tab === 0 && <ViewOrders />}
+        {tab === 1 && <DeleteOrder />}
+      </Container>
+    </Box>
   );
 };
 

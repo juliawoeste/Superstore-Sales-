@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const csv = require("csvtojson");
 require("dotenv").config();
 
-const Order = require("./models/Order"); // we’ll create this next
+const Order = require("./models/order");
 
 const importData = async () => {
   try {

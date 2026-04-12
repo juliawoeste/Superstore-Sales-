@@ -6,7 +6,17 @@ import Home from "./components/Home";
 const theme = createTheme({
   palette: {
     primary: {
-      main: blue[500],
+      main: blue[600],
+    },
+  },
+  typography: {
+    fontFamily: "'Segoe UI', Roboto, sans-serif",
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: { textTransform: "none" },
+      },
     },
   },
 });
