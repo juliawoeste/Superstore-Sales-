@@ -1,4 +1,15 @@
 import { useState } from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  Alert,
+  Grid,
+  Divider,
+} from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 export default function CreateOrder() {
   const [formData, setFormData] = useState({
@@ -23,6 +34,7 @@ export default function CreateOrder() {
   });
 
   const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const [createdOrder, setCreatedOrder] = useState(null);
 
   const handleChange = (e) => {
@@ -37,6 +49,7 @@ export default function CreateOrder() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+    setIsError(false);
     setCreatedOrder(null);
 
     try {
@@ -45,7 +58,11 @@ export default function CreateOrder() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          Row_ID: formData.Row_ID === "" ? "" : Number(formData.Row_ID),
+          Sales: formData.Sales === "" ? "" : Number(formData.Sales),
+        }),
       });
 
       const data = await response.json();
@@ -55,6 +72,7 @@ export default function CreateOrder() {
       }
 
       setMessage("Order created successfully.");
+      setIsError(false);
       setCreatedOrder(data);
 
       setFormData({
@@ -79,138 +97,268 @@ export default function CreateOrder() {
       });
     } catch (error) {
       setMessage(error.message);
+      setIsError(true);
     }
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Create Order</h2>
+    <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
+      <Box display="flex" alignItems="center" gap={1} mb={2}>
+        <AddCircleOutlineIcon color="primary" />
+        <Typography variant="h6" fontWeight={600}>
+          Create Order
+        </Typography>
+      </Box>
 
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "grid", gap: "10px", maxWidth: "500px" }}
-      >
-        <input
-          name="Row_ID"
-          placeholder="Row_ID"
-          value={formData.Row_ID}
-          onChange={handleChange}
-        />
-        <input
-          name="Order_ID"
-          placeholder="Order_ID"
-          value={formData.Order_ID}
-          onChange={handleChange}
-          required
-        />
-        <input
-          name="Order_Date"
-          placeholder="Order_Date"
-          value={formData.Order_Date}
-          onChange={handleChange}
-        />
-        <input
-          name="Ship_Date"
-          placeholder="Ship_Date"
-          value={formData.Ship_Date}
-          onChange={handleChange}
-        />
-        <input
-          name="Ship_Mode"
-          placeholder="Ship_Mode"
-          value={formData.Ship_Mode}
-          onChange={handleChange}
-        />
-        <input
-          name="Customer_ID"
-          placeholder="Customer_ID"
-          value={formData.Customer_ID}
-          onChange={handleChange}
-        />
-        <input
-          name="Customer_Name"
-          placeholder="Customer_Name"
-          value={formData.Customer_Name}
-          onChange={handleChange}
-        />
-        <input
-          name="Segment"
-          placeholder="Segment"
-          value={formData.Segment}
-          onChange={handleChange}
-        />
-        <input
-          name="Country"
-          placeholder="Country"
-          value={formData.Country}
-          onChange={handleChange}
-        />
-        <input
-          name="City"
-          placeholder="City"
-          value={formData.City}
-          onChange={handleChange}
-        />
-        <input
-          name="State"
-          placeholder="State"
-          value={formData.State}
-          onChange={handleChange}
-        />
-        <input
-          name="Postal_Code"
-          placeholder="Postal_Code"
-          value={formData.Postal_Code}
-          onChange={handleChange}
-        />
-        <input
-          name="Region"
-          placeholder="Region"
-          value={formData.Region}
-          onChange={handleChange}
-        />
-        <input
-          name="Product_ID"
-          placeholder="Product_ID"
-          value={formData.Product_ID}
-          onChange={handleChange}
-        />
-        <input
-          name="Category"
-          placeholder="Category"
-          value={formData.Category}
-          onChange={handleChange}
-        />
-        <input
-          name="Sub_Category"
-          placeholder="Sub_Category"
-          value={formData.Sub_Category}
-          onChange={handleChange}
-        />
-        <input
-          name="Product_Name"
-          placeholder="Product_Name"
-          value={formData.Product_Name}
-          onChange={handleChange}
-        />
-        <input
-          name="Sales"
-          placeholder="Sales"
-          value={formData.Sales}
-          onChange={handleChange}
-        />
+      <Divider sx={{ mb: 2 }} />
 
-        <button type="submit">Create Order</button>
-      </form>
+      {message && (
+        <Alert
+          severity={isError ? "error" : "success"}
+          sx={{ mb: 2 }}
+          onClose={() => setMessage("")}
+        >
+          {message}
+        </Alert>
+      )}
 
-      {message && <p>{message}</p>}
+      <Box component="form" onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Row ID"
+              name="Row_ID"
+              value={formData.Row_ID}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Order ID"
+              name="Order_ID"
+              value={formData.Order_ID}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              required
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Order Date"
+              name="Order_Date"
+              value={formData.Order_Date}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="11/8/2016"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Ship Date"
+              name="Ship_Date"
+              value={formData.Ship_Date}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="11/11/2016"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Ship Mode"
+              name="Ship_Mode"
+              value={formData.Ship_Mode}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="Second Class"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Customer ID"
+              name="Customer_ID"
+              value={formData.Customer_ID}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Customer Name"
+              name="Customer_Name"
+              value={formData.Customer_Name}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Segment"
+              name="Segment"
+              value={formData.Segment}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="Consumer"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Country"
+              name="Country"
+              value={formData.Country}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="United States"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="City"
+              name="City"
+              value={formData.City}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="State"
+              name="State"
+              value={formData.State}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Postal Code"
+              name="Postal_Code"
+              value={formData.Postal_Code}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Region"
+              name="Region"
+              value={formData.Region}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="Central"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Product ID"
+              name="Product_ID"
+              value={formData.Product_ID}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Category"
+              name="Category"
+              value={formData.Category}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="Furniture"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Sub-Category"
+              name="Sub_Category"
+              value={formData.Sub_Category}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="Bookcases"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Product Name"
+              name="Product_Name"
+              value={formData.Product_Name}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Sales"
+              name="Sales"
+              value={formData.Sales}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              type="number"
+            />
+          </Grid>
+        </Grid>
+
+        <Box mt={3}>
+          <Button type="submit" variant="contained" size="large">
+            Create Order
+          </Button>
+        </Box>
+      </Box>
 
       {createdOrder && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>Created Order</h3>
-          <pre>{JSON.stringify(createdOrder, null, 2)}</pre>
-        </div>
+        <Box mt={3}>
+          <Typography variant="subtitle1" fontWeight={600} mb={1}>
+            Created Order
+          </Typography>
+          <Paper
+            variant="outlined"
+            sx={{
+              p: 2,
+              backgroundColor: "#fafafa",
+              overflowX: "auto",
+            }}
+          >
+            <pre style={{ margin: 0 }}>
+              {JSON.stringify(createdOrder, null, 2)}
+            </pre>
+          </Paper>
+        </Box>
       )}
-    </div>
+    </Paper>
   );
 }

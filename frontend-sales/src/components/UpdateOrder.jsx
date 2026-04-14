@@ -1,4 +1,15 @@
 import { useState } from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  Alert,
+  Grid,
+  Divider,
+} from "@mui/material";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 export default function UpdateOrder() {
   const [id, setId] = useState("");
@@ -11,6 +22,7 @@ export default function UpdateOrder() {
   });
 
   const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const [updatedOrder, setUpdatedOrder] = useState(null);
 
   const handleChange = (e) => {
@@ -25,6 +37,7 @@ export default function UpdateOrder() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     setMessage("");
+    setIsError(false);
     setUpdatedOrder(null);
 
     try {
@@ -33,7 +46,10 @@ export default function UpdateOrder() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          Sales: formData.Sales === "" ? "" : Number(formData.Sales),
+        }),
       });
 
       const data = await response.json();
@@ -43,6 +59,7 @@ export default function UpdateOrder() {
       }
 
       setMessage("Order updated successfully.");
+      setIsError(false);
       setUpdatedOrder(data);
 
       setFormData({
@@ -55,71 +72,130 @@ export default function UpdateOrder() {
       setId("");
     } catch (error) {
       setMessage(error.message);
+      setIsError(true);
     }
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Update Order</h2>
+    <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
+      <Box display="flex" alignItems="center" gap={1} mb={2}>
+        <EditOutlinedIcon color="primary" />
+        <Typography variant="h6" fontWeight={600}>
+          Update Order
+        </Typography>
+      </Box>
 
-      <form
-        onSubmit={handleUpdate}
-        style={{ display: "grid", gap: "10px", maxWidth: "500px" }}
-      >
-        <input
-          name="id"
-          placeholder="MongoDB _id"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
-          required
-        />
+      <Divider sx={{ mb: 2 }} />
 
-        <input
-          name="Customer_Name"
-          placeholder="Customer_Name"
-          value={formData.Customer_Name}
-          onChange={handleChange}
-        />
+      {message && (
+        <Alert
+          severity={isError ? "error" : "success"}
+          sx={{ mb: 2 }}
+          onClose={() => setMessage("")}
+        >
+          {message}
+        </Alert>
+      )}
 
-        <input
-          name="Region"
-          placeholder="Region"
-          value={formData.Region}
-          onChange={handleChange}
-        />
+      <Box component="form" onSubmit={handleUpdate}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              label="MongoDB _id"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              fullWidth
+              size="small"
+              required
+              placeholder="Enter the document _id"
+            />
+          </Grid>
 
-        <input
-          name="Category"
-          placeholder="Category"
-          value={formData.Category}
-          onChange={handleChange}
-        />
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Customer Name"
+              name="Customer_Name"
+              value={formData.Customer_Name}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+            />
+          </Grid>
 
-        <input
-          name="Product_Name"
-          placeholder="Product_Name"
-          value={formData.Product_Name}
-          onChange={handleChange}
-        />
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Region"
+              name="Region"
+              value={formData.Region}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="Central"
+            />
+          </Grid>
 
-        <input
-          name="Sales"
-          placeholder="Sales"
-          value={formData.Sales}
-          onChange={handleChange}
-        />
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Category"
+              name="Category"
+              value={formData.Category}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="Furniture"
+            />
+          </Grid>
 
-        <button type="submit">Update Order</button>
-      </form>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Product Name"
+              name="Product_Name"
+              value={formData.Product_Name}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+            />
+          </Grid>
 
-      {message && <p>{message}</p>}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Sales"
+              name="Sales"
+              value={formData.Sales}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              type="number"
+            />
+          </Grid>
+        </Grid>
+
+        <Box mt={3}>
+          <Button type="submit" variant="contained" size="large">
+            Update Order
+          </Button>
+        </Box>
+      </Box>
 
       {updatedOrder && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>Updated Order</h3>
-          <pre>{JSON.stringify(updatedOrder, null, 2)}</pre>
-        </div>
+        <Box mt={3}>
+          <Typography variant="subtitle1" fontWeight={600} mb={1}>
+            Updated Order
+          </Typography>
+          <Paper
+            variant="outlined"
+            sx={{
+              p: 2,
+              backgroundColor: "#fafafa",
+              overflowX: "auto",
+            }}
+          >
+            <pre style={{ margin: 0 }}>
+              {JSON.stringify(updatedOrder, null, 2)}
+            </pre>
+          </Paper>
+        </Box>
       )}
-    </div>
+    </Paper>
   );
 }
