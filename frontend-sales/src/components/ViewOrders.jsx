@@ -77,7 +77,9 @@ const ViewOrders = () => {
     setError("");
     try {
       const res = await fetch(
-        `http://localhost:5000/api/orders?page=${page}&limit=12&search=${encodeURIComponent(search)}`,
+        `http://localhost:5001/api/orders?page=${page}&limit=12&search=${encodeURIComponent(
+          search
+        )}`
       );
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to fetch orders");

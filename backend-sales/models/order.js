@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema(
     Product_Name: String,
     Sales: Number,
   },
-  { strict: false },
+  { strict: false }
 );
 
-module.exports = mongoose.model("Order", orderSchema);
+module.exports = mongoose.models.Order || mongoose.model("Order", orderSchema);

@@ -44,7 +44,9 @@ const DeleteOrder = () => {
     setError("");
     try {
       const res = await fetch(
-        `http://localhost:5000/api/orders?page=${page}&limit=10&search=${encodeURIComponent(search)}`,
+        `http://localhost:5001/api/orders?page=${page}&limit=10&search=${encodeURIComponent(
+          search
+        )}`
       );
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to fetch");
@@ -82,7 +84,7 @@ const DeleteOrder = () => {
   const handleDelete = async () => {
     setDeleting(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/orders/${confirmId}`, {
+      const res = await fetch(`http://localhost:5001/api/orders/${confirmId}`, {
         method: "DELETE",
       });
       const data = await res.json();

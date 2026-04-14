@@ -2,12 +2,18 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
-
 const orderRoutes = require("./routes/orders");
+const Order = require("./models/Order");
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 app.use(express.json());
 
 mongoose
@@ -22,4 +28,6 @@ app.get("/", (req, res) => {
   res.send("Backend running");
 });
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+const ordersRoutes = require("./routes/orders");
+
+app.listen(5001, () => console.log("Server running on port 5001"));

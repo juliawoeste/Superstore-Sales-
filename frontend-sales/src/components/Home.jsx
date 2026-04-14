@@ -11,8 +11,13 @@ import {
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+
 import ViewOrders from "./ViewOrders";
 import DeleteOrder from "./DeleteOrder";
+import CreateOrder from "./CreateOrder";
+import UpdateOrder from "./UpdateOrder";
 
 const Home = () => {
   const [tab, setTab] = useState(0);
@@ -41,6 +46,8 @@ const Home = () => {
             onChange={(_, v) => setTab(v)}
             textColor="primary"
             indicatorColor="primary"
+            variant="scrollable"
+            scrollButtons="auto"
           >
             <Tab
               icon={<TableRowsIcon fontSize="small" />}
@@ -52,6 +59,16 @@ const Home = () => {
               iconPosition="start"
               label="Delete Orders"
             />
+            <Tab
+              icon={<AddCircleOutlineIcon fontSize="small" />}
+              iconPosition="start"
+              label="Create Order"
+            />
+            <Tab
+              icon={<EditOutlinedIcon fontSize="small" />}
+              iconPosition="start"
+              label="Update Order"
+            />
           </Tabs>
         </Container>
       </Box>
@@ -59,6 +76,8 @@ const Home = () => {
       <Container maxWidth="lg" sx={{ py: 3 }}>
         {tab === 0 && <ViewOrders />}
         {tab === 1 && <DeleteOrder />}
+        {tab === 2 && <CreateOrder />}
+        {tab === 3 && <UpdateOrder />}
       </Container>
     </Box>
   );
