@@ -53,9 +53,32 @@ router.delete("/:id", async (req, res) => {
 });
 
 // CREATE - Add a new order
+// CREATE - Add a new order
 router.post("/", async (req, res) => {
   try {
-    const newOrder = new Order(req.body);
+    const maxRowResult = await Order.aggregate([
+      {
+        $project: {
+          Row_ID_num: { $toInt: "$Row_ID" },
+        },
+      },
+      {
+        $sort: { Row_ID_num: -1 },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
+    const maxRowId = maxRowResult.length > 0 ? maxRowResult[0].Row_ID_num : 0;
+    const nextRowId = maxRowId + 1;
+
+    const newOrder = new Order({
+      ...req.body,
+      Row_ID: nextRowId,
+      Sales: req.body.Sales === "" ? 0 : Number(req.body.Sales),
+    });
+
     const savedOrder = await newOrder.save();
     res.status(201).json(savedOrder);
   } catch (err) {
@@ -64,10 +87,12 @@ router.post("/", async (req, res) => {
 });
 
 // UPDATE - Update an order by Order_ID
-router.put("/:id", async (req, res) => {
+router.put("/row/:rowId", async (req, res) => {
   try {
-    const updatedOrder = await Order.findByIdAndUpdate(
-      req.params.id,
+    const rowId = Number(req.params.rowId);
+
+    const updatedOrder = await Order.findOneAndUpdate(
+      { Row_ID: rowId },
       req.body,
       { new: true }
     );

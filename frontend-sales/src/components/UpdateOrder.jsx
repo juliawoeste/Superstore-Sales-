@@ -12,7 +12,7 @@ import {
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 export default function UpdateOrder() {
-  const [id, setId] = useState("");
+  const [rowId, setRowId] = useState("");
   const [formData, setFormData] = useState({
     Customer_Name: "",
     Region: "",
@@ -41,17 +41,19 @@ export default function UpdateOrder() {
     setUpdatedOrder(null);
 
     try {
-      const response = await fetch(`http://localhost:5001/api/orders/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          Sales: formData.Sales === "" ? "" : Number(formData.Sales),
-        }),
-      });
-
+      const response = await fetch(
+        `http://localhost:5001/api/orders/row/${rowId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formData,
+            Sales: formData.Sales === "" ? "" : Number(formData.Sales),
+          }),
+        }
+      );
       const data = await response.json();
 
       if (!response.ok) {
@@ -69,7 +71,7 @@ export default function UpdateOrder() {
         Product_Name: "",
         Sales: "",
       });
-      setId("");
+      setRowId("");
     } catch (error) {
       setMessage(error.message);
       setIsError(true);
@@ -101,13 +103,11 @@ export default function UpdateOrder() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              label="MongoDB _id"
-              value={id}
-              onChange={(e) => setId(e.target.value)}
+              label="Row ID"
+              value={rowId}
+              onChange={(e) => setRowId(e.target.value)}
               fullWidth
-              size="small"
               required
-              placeholder="Enter the document _id"
             />
           </Grid>
 

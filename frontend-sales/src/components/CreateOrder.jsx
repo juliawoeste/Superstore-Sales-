@@ -13,7 +13,6 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 export default function CreateOrder() {
   const [formData, setFormData] = useState({
-    Row_ID: "",
     Order_ID: "",
     Order_Date: "",
     Ship_Date: "",
@@ -126,17 +125,6 @@ export default function CreateOrder() {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Row ID"
-              name="Row_ID"
-              value={formData.Row_ID}
-              onChange={handleChange}
-              fullWidth
-              size="small"
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField
               label="Order ID"
               name="Order_ID"
               value={formData.Order_ID}
@@ -155,7 +143,7 @@ export default function CreateOrder() {
               onChange={handleChange}
               fullWidth
               size="small"
-              placeholder="11/8/2016"
+              placeholder="DD/MM/YYYY"
             />
           </Grid>
 
@@ -167,7 +155,8 @@ export default function CreateOrder() {
               onChange={handleChange}
               fullWidth
               size="small"
-              placeholder="11/11/2016"
+              placeholder="DD/MM/YYYY"
+              required
             />
           </Grid>
 
@@ -191,6 +180,7 @@ export default function CreateOrder() {
               onChange={handleChange}
               fullWidth
               size="small"
+              required
             />
           </Grid>
 
@@ -202,6 +192,7 @@ export default function CreateOrder() {
               onChange={handleChange}
               fullWidth
               size="small"
+              required
             />
           </Grid>
 
@@ -271,6 +262,7 @@ export default function CreateOrder() {
               fullWidth
               size="small"
               placeholder="Central"
+              required
             />
           </Grid>
 
@@ -282,6 +274,7 @@ export default function CreateOrder() {
               onChange={handleChange}
               fullWidth
               size="small"
+              required
             />
           </Grid>
 
@@ -317,6 +310,7 @@ export default function CreateOrder() {
               onChange={handleChange}
               fullWidth
               size="small"
+              required
             />
           </Grid>
 
@@ -329,6 +323,7 @@ export default function CreateOrder() {
               fullWidth
               size="small"
               type="number"
+              required
             />
           </Grid>
         </Grid>
@@ -362,3 +357,7 @@ export default function CreateOrder() {
     </Paper>
   );
 }
+
+// auto increment the row id.
+// make order date, customer name and id, product name, product id, sales
+// update the order by row id instead of _id
