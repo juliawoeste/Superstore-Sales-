@@ -107,4 +107,35 @@ router.put("/row/:rowId", async (req, res) => {
   }
 });
 
+// get the total sales per region, per category
+router.get("/map-reduce/region/:region", async (req, res) => {
+  try {
+    const region = req.params.region;
+
+    const results = await Order.aggregate([
+      {
+        $match: { Region: region },
+      },
+      {
+        $addFields: {
+          Sales_num: { $toDouble: "$Sales" },
+        },
+      },
+      {
+        $group: {
+          _id: "$Category",
+          totalSales: { $sum: "$Sales_num" },
+        },
+      },
+      {
+        $sort: { totalSales: -1 },
+      },
+    ]);
+
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

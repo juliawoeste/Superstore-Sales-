@@ -13,11 +13,13 @@ import TableRowsIcon from "@mui/icons-material/TableRows";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 
 import ViewOrders from "./ViewOrders";
 import DeleteOrder from "./DeleteOrder";
 import CreateOrder from "./CreateOrder";
 import UpdateOrder from "./UpdateOrder";
+import Dashboard from "./Dashboard";
 
 const Home = () => {
   const [tab, setTab] = useState(0);
@@ -69,6 +71,11 @@ const Home = () => {
               iconPosition="start"
               label="Update Order"
             />
+            <Tab
+              icon={<AssessmentOutlinedIcon fontSize="small" />}
+              iconPosition="start"
+              label="Dashboard"
+            />
           </Tabs>
         </Container>
       </Box>
@@ -78,6 +85,7 @@ const Home = () => {
         {tab === 1 && <DeleteOrder />}
         {tab === 2 && <CreateOrder />}
         {tab === 3 && <UpdateOrder />}
+        {tab === 4 && <Dashboard />}
       </Container>
     </Box>
   );

@@ -23,6 +23,7 @@ mongoose
 
 // Routes
 app.use("/api/orders", orderRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend running");
