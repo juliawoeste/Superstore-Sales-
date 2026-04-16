@@ -52,6 +52,11 @@ const Home = () => {
             scrollButtons="auto"
           >
             <Tab
+              icon={<AssessmentOutlinedIcon fontSize="small" />}
+              iconPosition="start"
+              label="Dashboard"
+            />
+            <Tab
               icon={<TableRowsIcon fontSize="small" />}
               iconPosition="start"
               label="View Orders"
@@ -71,21 +76,16 @@ const Home = () => {
               iconPosition="start"
               label="Update Order"
             />
-            <Tab
-              icon={<AssessmentOutlinedIcon fontSize="small" />}
-              iconPosition="start"
-              label="Dashboard"
-            />
           </Tabs>
         </Container>
       </Box>
 
       <Container maxWidth="lg" sx={{ py: 3 }}>
-        {tab === 0 && <ViewOrders />}
-        {tab === 1 && <DeleteOrder />}
-        {tab === 2 && <CreateOrder />}
-        {tab === 3 && <UpdateOrder />}
-        {tab === 4 && <Dashboard />}
+        {tab === 0 && <Dashboard />}
+        {tab === 1 && <ViewOrders />}
+        {tab === 2 && <DeleteOrder />}
+        {tab === 3 && <CreateOrder />}
+        {tab === 4 && <UpdateOrder />}
       </Container>
     </Box>
   );
