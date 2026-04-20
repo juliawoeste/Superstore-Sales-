@@ -15,9 +15,14 @@ export default function UpdateOrder() {
   const [rowId, setRowId] = useState("");
   const [formData, setFormData] = useState({
     Customer_Name: "",
+    Customer_ID: "",
     Region: "",
     Category: "",
+    Sub_Category: "",
     Product_Name: "",
+    Ship_Mode: "",
+    Order_Date: "",
+    Ship_Date: "",
     Sales: "",
   });
 
@@ -41,6 +46,10 @@ export default function UpdateOrder() {
     setUpdatedOrder(null);
 
     try {
+      const cleanedData = Object.fromEntries(
+        Object.entries(formData).filter(([_, value]) => value !== "")
+      );
+
       const response = await fetch(
         `http://localhost:5001/api/orders/row/${rowId}`,
         {
@@ -49,8 +58,8 @@ export default function UpdateOrder() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            ...formData,
-            Sales: formData.Sales === "" ? "" : Number(formData.Sales),
+            ...cleanedData,
+            ...(cleanedData.Sales && { Sales: Number(cleanedData.Sales) }),
           }),
         }
       );
@@ -66,9 +75,14 @@ export default function UpdateOrder() {
 
       setFormData({
         Customer_Name: "",
+        Customer_ID: "",
         Region: "",
         Category: "",
+        Sub_Category: "",
         Product_Name: "",
+        Ship_Mode: "",
+        Order_Date: "",
+        Ship_Date: "",
         Sales: "",
       });
       setRowId("");
@@ -124,6 +138,17 @@ export default function UpdateOrder() {
 
           <Grid item xs={12} sm={6}>
             <TextField
+              label="Customer ID"
+              name="Customer_ID"
+              value={formData.Customer_ID}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
               label="Region"
               name="Region"
               value={formData.Region}
@@ -148,12 +173,60 @@ export default function UpdateOrder() {
 
           <Grid item xs={12} sm={6}>
             <TextField
+              label="Sub-Category"
+              name="Sub_Category"
+              value={formData.Sub_Category}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="Bookcases"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
               label="Product Name"
               name="Product_Name"
               value={formData.Product_Name}
               onChange={handleChange}
               fullWidth
               size="small"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Ship Mode"
+              name="Ship_Mode"
+              value={formData.Ship_Mode}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="Second Class"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Order Date"
+              name="Order_Date"
+              value={formData.Order_Date}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="MM/DD/YYYY"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Ship Date"
+              name="Ship_Date"
+              value={formData.Ship_Date}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              placeholder="MM/DD/YYYY"
             />
           </Grid>
 

@@ -86,15 +86,19 @@ router.post("/", async (req, res) => {
   }
 });
 
-// UPDATE - Update an order by Order_ID
+// UPDATE - Update an order by row id
 router.put("/row/:rowId", async (req, res) => {
   try {
-    const rowId = Number(req.params.rowId);
+    const rowId = req.params.rowId.trim();
 
     const updatedOrder = await Order.findOneAndUpdate(
-      { Row_ID: rowId },
-      req.body,
-      { new: true },
+      {
+        $expr: {
+          $eq: [{ $toString: "$Row_ID" }, rowId],
+        },
+      },
+      { $set: req.body },
+      { new: true }
     );
 
     if (!updatedOrder) {
