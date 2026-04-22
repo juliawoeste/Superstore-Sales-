@@ -30,6 +30,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET single order by Row_ID
+router.get("/rowid/:rowId", async (req, res) => {
+  try {
+    const rowId = req.params.rowId.trim();
+    const order = await Order.findOne({
+      $expr: { $eq: [{ $toString: "$Row_ID" }, rowId] },
+    }).lean();
+    if (!order) {
+      return res.status(404).json({ error: `Row ID ${rowId} does not exist.` });
+    }
+    res.json(order);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GET single order by _id
 router.get("/:id", async (req, res) => {
   try {
@@ -97,7 +113,7 @@ router.put("/row/:rowId", async (req, res) => {
         },
       },
       { $set: req.body },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedOrder) {
