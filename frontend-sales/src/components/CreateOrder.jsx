@@ -357,7 +357,3 @@ export default function CreateOrder() {
     </Paper>
   );
 }
-
-// auto increment the row id.
-// make order date, customer name and id, product name, product id, sales
-// update the order by row id instead of _id

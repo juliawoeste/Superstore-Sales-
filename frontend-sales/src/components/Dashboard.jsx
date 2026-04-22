@@ -64,7 +64,7 @@ const Section = ({ icon, title, color, children, loading, error }) => (
       height: "100%",
       display: "flex",
       flexDirection: "column",
-      justifyContent: "space-between", // 👈 important
+      justifyContent: "space-between",
     }}
   >
     <Box display="flex" alignItems="center" gap={1} mb={1}>
@@ -78,7 +78,6 @@ const Section = ({ icon, title, color, children, loading, error }) => (
 
     <Box sx={{ flexGrow: 1 }}>
       {" "}
-      {/* 👈 forces spacing */}
       {loading ? (
         <Box display="flex" justifyContent="center" py={4}>
           <CircularProgress />
@@ -159,8 +158,8 @@ const Dashboard = () => {
     try {
       const response = await fetch(
         `http://localhost:5001/api/mapreduce/region/${encodeURIComponent(
-          regionQuery,
-        )}`,
+          regionQuery
+        )}`
       );
 
       const data = await response.json();

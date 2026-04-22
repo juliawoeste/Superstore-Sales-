@@ -53,7 +53,6 @@ router.delete("/:id", async (req, res) => {
 });
 
 // CREATE - Add a new order
-// CREATE - Add a new order
 router.post("/", async (req, res) => {
   try {
     const maxRowResult = await Order.aggregate([
